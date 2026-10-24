@@ -80,6 +80,10 @@ env:
 
 jobs:
   activation:
+    # This agent needs the COPILOT_GITHUB_TOKEN secret, which only the upstream Z3Prover/z3 repository has. In a mirror the
+    # scheduled run stops at "Validate COPILOT_GITHUB_TOKEN secret", so it runs on its schedule only upstream; a manual
+    # run (workflow_dispatch) still starts anywhere. Every other job needs this one, so the whole run is skipped.
+    if: github.repository == 'Z3Prover/z3' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-slim
     permissions:
       actions: read
